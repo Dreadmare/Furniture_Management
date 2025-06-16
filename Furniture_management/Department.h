@@ -21,7 +21,7 @@ public:
 	void sortItem(bool ascending = true);
 	void searchPriceAsc();
 	void editStock();
-	void deleteItem();
+	void deleteItem(string targetPID);
 
 	int getNoOfProduct();
 	Product* binarySearchByPrice(float targetPrice);
