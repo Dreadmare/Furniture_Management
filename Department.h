@@ -18,7 +18,7 @@ public:
 	Department(string name);
 	void addItem(Product* newProduct);
 	void displayItem();
-	void sortItem();  
+	void sortItem(bool ascending = true);
 	void searchPriceAsc();
 	void editStock();
 	void deleteItem();
