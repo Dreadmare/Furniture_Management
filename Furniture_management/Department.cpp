@@ -90,8 +90,38 @@ void Department::editStock() {
 
 }
 
-void Department::deleteItem() {
+//This function can let user to input the target item ID and delete the Item.
+void Department::deleteItem(string targetPID) {
+	Product* current = pHead;
+	Product* previous = nullptr;
 
+	while (current != nullptr && current->PID != targetPID) {
+		previous = current;
+		current = current->next;
+	}
+
+	if (current == nullptr) {
+		cout << "Product with ID " << targetPID << " not found.\n";
+		return;
+	}
+
+	// Update pHead if the target is at pHead.
+	if (previous == nullptr) {
+		pHead = current->next;
+	}
+	else {
+		previous->next = current->next;
+	}
+
+	//Update pTail if last item was deleted.
+	if (current->next == nullptr && pTail == current) {
+		pTail = previous;
+	}
+
+	delete current;
+	noOfProduct--;
+
+	cout << "Product with ID " << targetPID << " deleted successfully.\n";
 }
 
 int Department::getNoOfProduct() {
