@@ -24,6 +24,9 @@ public:
 	void deleteItem();
 
 	int getNoOfProduct();
+	Product* binarySearchByPrice(float targetPrice);
+	Product* sentinelSearchByPrice(float targetPrice);
+
 };
 
 #endif
