@@ -82,8 +82,13 @@ void Department::sortItem(bool ascending) {
 
 }
 
+//Sorting price in asc order from lowest to highest price
 void Department::searchPriceAsc() {
-
+	if(!pHead){
+		cout<<"No product to display.\n";
+		return;
+	}
+	
 }
 
 void Department::editStock() {
