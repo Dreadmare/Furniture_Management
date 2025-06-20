@@ -86,8 +86,34 @@ void Department::searchPriceAsc() {
 
 }
 
-void Department::editStock() {
+void Department::editStock(string targetPID) { //This Function is use to edit the product stock number.
 
+		Product* current = pHead;
+		while (current != nullptr && current->PID != targetPID) {
+			current = current->next;
+		}
+
+		//If the product ID is not found, it will show this message.
+		if (current == nullptr) {
+			cout << "Product with ID " << targetPID << " not found.\n";
+			return;
+		}
+
+		cout << "Current stock for Product ID " << targetPID << ": " << current->stock << endl;
+
+		//Insert new stock quantity.
+		int newStock;
+		cout << "Enter new stock quantity: ";
+		cin >> newStock;
+
+		// To validate the stock is not negative number.
+		if (newStock < 0) {
+			cout << "Stock cannot be negative. Operation cancelled.\n";
+			return;
+		}
+
+		current->stock = newStock;
+		cout << "Stock updated successfully.\n";
 }
 
 //This function can let user to input the target item ID and delete the Item.
