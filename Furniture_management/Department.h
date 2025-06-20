@@ -20,8 +20,8 @@ public:
 	void displayItem();
 	void sortItem(bool ascending = true);
 	void searchPriceAsc();
-	void editStock();
-	void deleteItem(string targetPID);
+	void editStock(string);
+	void deleteItem(string);
 
 	int getNoOfProduct();
 	Product* binarySearchByPrice(float targetPrice);
