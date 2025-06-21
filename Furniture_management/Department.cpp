@@ -83,7 +83,12 @@ void Department::sortItem(bool ascending) {
 }
 
 void Department::searchPriceAsc() {
-
+	if (!pHead) {
+		cout << "No products to display.\n";
+        return;
+	}
+	
+	
 }
 
 void Department::editStock(string targetPID) { //This Function is use to edit the product stock number.
