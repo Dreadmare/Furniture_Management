@@ -2,6 +2,8 @@
 #define DEPARTMENT_H
 #include <string>
 #include "Product.h"
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 //This class is like the linked list of products 
@@ -18,14 +20,15 @@ public:
 	Department(string name);
 	void addItem(Product* newProduct);
 	void displayItem();
-	void sortItem(bool ascending = true);
-	void searchPriceAsc();
+	void sortItemByPrice(bool ascending = true);
+	void searchItemName(string);
 	void editStock(string);
 	void deleteItem(string);
-
+	vector<Product*> toVector();
+	Product* binarySearchByPID(const string& targetPID);
+	Product* sentinelSearchByPID(const string& targetPID);
 	int getNoOfProduct();
-	Product* binarySearchByPrice(float targetPrice);
-	Product* sentinelSearchByPrice(float targetPrice);
+
 
 };
 
