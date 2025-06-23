@@ -71,7 +71,7 @@ void InventorySystem::menu() {
             cout << "Enter Product ID: ";
             cin >> id;
             if (!isPIDUniqueAcrossDepartments(id)) {
-                cout << "Product ID " << id << " already exists in another department.\n";
+                cout << "Product ID " << id << " already exists.\n";
                 break;
             }
             cout << "Enter Product Name: ";

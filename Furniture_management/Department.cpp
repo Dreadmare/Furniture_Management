@@ -15,15 +15,6 @@ Department::Department(string name) {
 //for testing, this function will receive product's info from Main.cpp
 //after complete all core functions, then only get user input
 void Department::addItem(Product* newProduct) {
-	Product* current = pHead;
-	while (current != nullptr) { //Validate the PID is already exists or not.
-		if (current->PID == newProduct->PID) {
-			cout << "Product ID " << newProduct->PID << " already exists. Cannot have same ID.\n";
-			return;
-		}
-		current = current->next;
-	}
-
 	if (!pHead) {
 		pHead = newProduct;
 	}
