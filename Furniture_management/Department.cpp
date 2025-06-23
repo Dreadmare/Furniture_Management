@@ -1,8 +1,11 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
 #include "Product.h"
 #include "Department.h"
-#include <iomanip>
+
 using namespace std;
 
 Department::Department(string name) {
@@ -180,7 +183,7 @@ void Department::searchItemName(string keyword) {
 	while (true) {
 		if (current->PID == keyword || current->productName == keyword) {
 			if (current == sentinel) break;
-			cout << "Found Product:\n";
+			cout << endl;
 			cout << right << setw(25) << "ID: " << current->PID << " | Name: " << current->productName 
 				<< " | Colour: " << current->colour << " | Price: RM" << current->price
 				<< " | Stock: " << current->stock << "\n";
@@ -272,4 +275,36 @@ void Department::deleteItem(string targetPID) {
 
 int Department::getNoOfProduct() {
 	return noOfProduct;
+}
+
+void Department::saveToFile(ofstream& outFile) {
+	Product* current = pHead;
+	while (current != nullptr) {
+		//write into file
+		outFile << current->PID << ','
+			<< current->productName << ','
+			<< current->colour << ','
+			<< current->price << ','
+			<< current->stock << '\n';
+		current = current->next;
+	}
+}
+
+void Department::loadFromFile(ifstream& inFile) {
+	string line;
+	while (getline(inFile, line)) {
+		stringstream ss(line);
+		string pid, name, colour, priceStr, stockStr;
+
+		getline(ss, pid, ',');
+		getline(ss, name, ',');
+		getline(ss, colour, ',');
+		getline(ss, priceStr, ',');
+		getline(ss, stockStr, ',');
+
+		float price = stof(priceStr);
+		int stock = stoi(stockStr);
+
+		addItem(new Product(pid, name, colour, price, stock));
+	}
 }

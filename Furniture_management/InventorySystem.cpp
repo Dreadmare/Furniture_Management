@@ -12,6 +12,7 @@ InventorySystem::InventorySystem() {
 	for (int i = 0; i < DEPT_COUNT; i++) {
 		dept[i] = new Department(deptName[i]);
 	}
+    loadAllDepartments(); //load form file on startup
 }
 
 //deconstructor to avoid memory leaking
@@ -19,14 +20,6 @@ InventorySystem::~InventorySystem() {
 	for (int i = 0; i < DEPT_COUNT; i++) {
 		delete dept[i];
 	}
-}
-
-bool InventorySystem::isPIDUniqueAcrossDepartments(const string& PID) {
-    for (int i = 0; i < DEPT_COUNT; ++i) {
-        if (dept[i]->sentinelSearchByPID(PID) != nullptr)
-            return false;
-    }
-    return true;
 }
 
 
@@ -172,11 +165,49 @@ void InventorySystem::menu() {
             break;
         }
         case 7:
+            saveAllDepartments(); //save all to file before close system
             running = false;
             cout << "Exiting system.\n";
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
+
+bool InventorySystem::isPIDUniqueAcrossDepartments(const string& PID) {
+    for (int i = 0; i < DEPT_COUNT; ++i) {
+        if (dept[i]->sentinelSearchByPID(PID) != nullptr)
+            return false;
+    }
+    return true;
+}
+
+void InventorySystem::saveAllDepartments() {
+    for (int i = 0; i < DEPT_COUNT; i++) {
+        string filename = deptName[i] + ".txt";
+        ofstream outFile(filename); //open a file to write
+        if (outFile.is_open()) {
+            dept[i]->saveToFile(outFile);
+            outFile.close();
+        }
+        else {
+            cout << "Failed to save to file: " << filename << endl;
+        }
+    }
+}
+
+void InventorySystem::loadAllDepartments() {
+    for (int i = 0; i < DEPT_COUNT; ++i) {
+        string filename = deptName[i] + ".txt";
+        ifstream inFile(filename);
+        if (inFile.is_open()) {
+            dept[i]->loadFromFile(inFile);
+            inFile.close();
+        }
+        else {
+            // File might not exist yet, ignore it
+            continue;
         }
     }
 }

@@ -28,7 +28,10 @@ public:
 	Product* binarySearchByPID(const string& targetPID);
 	Product* sentinelSearchByPID(const string& targetPID);
 	int getNoOfProduct();
-	//bool productFound(const string& PID);
+
+	//file operation
+	void saveToFile(ofstream& outFile);
+	void loadFromFile(ifstream& inFile);
 };
 
 #endif

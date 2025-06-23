@@ -1,2 +1,3 @@
-﻿  InventorySystem.cpp
+﻿  Department.cpp
+C:\Users\fyche\source\repos\Furniture_management_sys\Furniture_management\Department.cpp(121,12): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Furniture_management.vcxproj -> C:\Users\fyche\source\repos\Furniture_management_sys\x64\Debug\Furniture_management.exe

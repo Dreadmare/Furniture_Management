@@ -4,8 +4,6 @@
 using namespace std;
 
 int main() {
-	
-
 	InventorySystem system;
 	system.menu();
 }

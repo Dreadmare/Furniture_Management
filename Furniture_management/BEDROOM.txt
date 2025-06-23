@@ -1,0 +1,2 @@
+P001,bed frame,brown,399.99,10
+P002,wardrobe,white,299.5,5
