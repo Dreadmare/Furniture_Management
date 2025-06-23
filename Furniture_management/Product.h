@@ -13,7 +13,7 @@ public:
 	int stock;
 
 	//each node has info like id, name, colour...
-	Product(string id, string productName, string colour, float price, int stock);
+	Product(string id, string productName, string colour, double price, int stock);
 	Product* next;
 };
 

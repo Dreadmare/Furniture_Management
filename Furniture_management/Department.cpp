@@ -54,7 +54,6 @@ void Department::displayItem() {
 	}
 }
 
-
 //Use insertion sort technique to sort the product by Price.
 void Department::sortItemByPrice(bool ascending) {
 	if (pHead == nullptr || pHead->next == nullptr)
@@ -96,7 +95,7 @@ void Department::sortItemByPrice(bool ascending) {
 	}
 }
 
-//Use Binary Search technique to search the Product ID.
+//Use Binary Search technique to search by Product ID.
 Product* Department::binarySearchByPID(const string& targetPID) {
 	vector<Product*> productList = toVector();	//Since we use linked list, we need to change the data format to vector to do the binary search.
 
@@ -120,7 +119,7 @@ Product* Department::binarySearchByPID(const string& targetPID) {
 	return nullptr; //If the target not found it will return.
 }
 
-//Use Sentinel Search technique to search the Product ID.
+//Use Sentinel Search technique to search by Product ID.
 Product* Department::sentinelSearchByPID(const string& targetPID) {
 	if (!pHead) return nullptr;
 
@@ -152,11 +151,9 @@ Product* Department::sentinelSearchByPID(const string& targetPID) {
 	return current;
 }
 
-void Department::searchItemName(string keyword) {
-	if (!pHead) {
-		cout << "No products to search.\n";
-		return;
-	}
+//Use Sentinel Search technique to search by Product name
+bool Department::searchItemByName(string keyword) {
+	if (!pHead) return false;
 
 	// Create sentinel
 	Product* sentinel = new Product(keyword, keyword, "", 0.0, 0);
@@ -177,6 +174,7 @@ void Department::searchItemName(string keyword) {
 				<< "\nColour: " << current->colour << "\nPrice: RM" << current->price
 				<< "\nStock: " << current->stock << "\n";
 			found = true;
+			return found;
 		}
 		current = current->next;
 	}

@@ -11,6 +11,18 @@ InventorySystem::InventorySystem() {
 	for (int i = 0; i < DEPT_COUNT; i++) {
 		dept[i] = new Department(deptName[i]);
 	}
+    // Add initial products (hardcoded for demo/testing)
+    dept[BEDROOM]->addItem(new Product("P001", "Bed Frame", "Brown", 399.99, 10));
+    dept[BEDROOM]->addItem(new Product("P002", "Wardrobe", "White", 299.50, 7));
+
+    dept[LIVING_ROOM]->addItem(new Product("P101", "Sofa", "Grey", 599.00, 5));
+    dept[LIVING_ROOM]->addItem(new Product("P102", "TV Cabinet", "Black", 249.90, 4));
+
+    dept[KITCHEN]->addItem(new Product("P201", "Dining Table", "Oak", 699.00, 3));
+
+    dept[BATHROOM]->addItem(new Product("P301", "Mirror", "Silver", 89.90, 15));
+
+    dept[OTHERS]->addItem(new Product("P401", "Bookshelf", "Pine", 159.99, 8));
 }
 
 //deconstructor to avoid memory leaking
@@ -29,6 +41,7 @@ bool InventorySystem::isPIDUniqueAcrossDepartments(const string& PID) {
 }
 
 void InventorySystem::menu() {
+    string input;
     int choice;
     bool running = true;
 
@@ -44,9 +57,21 @@ void InventorySystem::menu() {
         cout << "6. Delete Product\n";
         cout << "7. Exit\n";
         cout << "Enter your choice: ";
-        cin >> choice;
+        getline(cin, input); // read as string first
+
+        // validate if input is number
+        if (input.empty() || input.find_first_not_of("0123456789") != string::npos) {
+            cout << "Invalid input. Please enter a number between 1 and 7.\n";
+            continue;
+        }
+        choice = stoi(input); // convert to int
+        if (choice < 1 || choice > 7) {
+            cout << "Invalid input. Please enter a number between 1 and 7.\n";
+            continue;
+        }
 
         switch (choice) {
+
         case 1: {
             for (int i = 0; i < DEPT_COUNT; i++) {
                 cout << "\n--- " << deptName[i] << " Department ---\n";
@@ -60,7 +85,8 @@ void InventorySystem::menu() {
             for (int i = 0; i < DEPT_COUNT; ++i)
                 cout << i+1 << ". " << deptName[i] << endl;
             cin >> deptChoice;
-            deptChoice -= 1;
+            cin.ignore();
+            deptChoice --;
             if (deptChoice < 0 || deptChoice >= DEPT_COUNT) {
                 cout << "Invalid department selection.\n";
                 break;
@@ -70,7 +96,7 @@ void InventorySystem::menu() {
             int stock;
             cout << "Enter Product ID: ";
             cin >> id;
-            if (!isPIDUniqueAcrossDepartments(id)) {
+            if (!isPIDUniqueAcrossDepartments(id)) { //Check the input PID already exists or not.
                 cout << "Product ID " << id << " already exists.\n";
                 break;
             }
@@ -79,10 +105,33 @@ void InventorySystem::menu() {
             getline(cin, name);
             cout << "Enter Colour: ";
             getline(cin, colour);
-            cout << "Enter Price: ";
-            cin >> price;
-            cout << "Enter Stock: ";
-            cin >> stock;
+            // Validate price input
+            while (true) {
+                cout << "Enter Price: ";
+                cin >> price;
+                if (cin.fail() || price < 0) {
+                    cout << "Invalid price. Please enter a valid positive number.\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+                else {
+                    break;
+                }
+            }
+
+            // Validate stock input
+            while (true) {
+                cout << "Enter Stock: ";
+                cin >> stock;
+                if (cin.fail() || stock < 0) {
+                    cout << "Invalid stock. Please enter a valid non-negative number.\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+                else {
+                    break;
+                }
+            }
             dept[deptChoice]->addItem(new Product(id, name, colour, price, stock));
             break;
         }
@@ -94,19 +143,53 @@ void InventorySystem::menu() {
             break;
         }
         case 4: {
-            string targetID;
+            string keyword;
+            cin.ignore(); // to clear newline left in input buffer
             cout << "Enter Product ID or Name to search: ";
-            cin >> targetID;
+            getline(cin, keyword);
+
+            bool found = false;
             for (int i = 0; i < DEPT_COUNT; i++) {
-                dept[i]->searchItemName(targetID);
+                Product* byID = dept[i]->sentinelSearchByPID(keyword);
+                if (byID) {
+                    cout << "\nFound in " << deptName[i] << " Department:\n";
+                    cout << "Product ID: " << byID->PID << "\nName: " << byID->productName
+                        << "\nColour: " << byID->colour << "\nPrice: RM" << byID->price
+                        << "\nStock: " << byID->stock << endl;
+                    found = true;
+                    break; // stop after first found match (or remove to find duplicates)
+                }
             }
+
+            // If not found by ID, try by Name
+            if (!found) {
+                for (int i = 0; i < DEPT_COUNT; i++) {
+                    bool nameFound = dept[i]->searchItemByName(keyword);
+                    if (nameFound) found = true;
+                }
+            }
+
+            if (!found) {
+                cout << "Product with ID or Name '" << keyword << "' not found in any department.\n";
+            }
+            break;
         }
         case 5: {
             string id;
             cout << "Enter Product ID to edit stock: ";
             cin >> id;
+            bool found = false;
             for (int i = 0; i < DEPT_COUNT; i++) {
-                dept[i]->editStock(id);
+                Product* result = dept[i]->binarySearchByPID(id);
+                if (result) {
+                    dept[i]->editStock(id);
+                    found = true;
+                    break; // stop checking other departments
+                }
+            }
+
+            if (!found) {
+                cout << "Product with ID " << id << " not found in any department.\n";
             }
             break;
         }
@@ -114,8 +197,17 @@ void InventorySystem::menu() {
             string id;
             cout << "Enter Product ID to delete: ";
             cin >> id;
+            bool found = false;
             for (int i = 0; i < DEPT_COUNT; i++) {
-                dept[i]->deleteItem(id);
+                Product* result = dept[i]->binarySearchByPID(id);
+                if (result) {
+                    dept[i]->deleteItem(id);
+                    found = true;
+                    break; // stop checking other departments
+                }
+            }
+            if (!found) { //If not found then output this message.
+                cout << "Product with ID " << id << " not found in any department.\n";
             }
             break;
         }

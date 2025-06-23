@@ -5,7 +5,7 @@ using namespace std;
 
 //once class product been called, class Product will 
 //receive argument which is the info needed.
-Product::Product(string PID, string productName, string colour, float price, int stock) {
+Product::Product(string PID, string productName, string colour, double price, int stock) {
 	this->PID = PID; 
 	this->productName = productName;
 	this->colour = colour;
