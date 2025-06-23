@@ -1,7 +1,7 @@
 #ifndef DEPARTMENT_H
 #define DEPARTMENT_H
-#include <string>
 #include "Product.h"
+#include <string>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -28,8 +28,7 @@ public:
 	Product* binarySearchByPID(const string& targetPID);
 	Product* sentinelSearchByPID(const string& targetPID);
 	int getNoOfProduct();
-
-
+	//bool productFound(const string& PID);
 };
 
 #endif

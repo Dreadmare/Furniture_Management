@@ -12,8 +12,7 @@ Department::Department(string name) {
 	noOfProduct = 0;
 }
 
-//for testing, this function will receive product's info from Main.cpp
-//after complete all core functions, then only get user input
+
 void Department::addItem(Product* newProduct) {
 	Product* current = pHead;
 	while (current != nullptr) { //Validate the PID is already exists or not.
@@ -35,7 +34,7 @@ void Department::addItem(Product* newProduct) {
 		temp->next = newProduct;
 	}
 	noOfProduct++;
-	cout << "Product added successfully.\n";
+	cout << "\nProduct added successfully!\n";
 }
 
 
@@ -181,10 +180,10 @@ void Department::searchItemName(string keyword) {
 	while (true) {
 		if (current->PID == keyword || current->productName == keyword) {
 			if (current == sentinel) break;
-			cout << "\nFound Product:\n";
-			cout << "ID: " << current->PID << "\nName: " << current->productName
-				<< "\nColour: " << current->colour << "\nPrice: RM" << current->price
-				<< "\nStock: " << current->stock << "\n";
+			cout << "Found Product:\n";
+			cout << right << setw(25) << "ID: " << current->PID << " | Name: " << current->productName 
+				<< " | Colour: " << current->colour << " | Price: RM" << current->price
+				<< " | Stock: " << current->stock << "\n";
 			found = true;
 		}
 		current = current->next;
@@ -213,14 +212,8 @@ void Department::editStock(string targetPID) { //This Function is use to edit th
 
 	Product* current = binarySearchByPID(targetPID);
 
-		//If the product ID is not found, it will show this message.
-		if (current == nullptr) {
-			cout << "Product with ID " << targetPID << " not found.\n";
-			return;
-		}
-
+	if (current != nullptr) {
 		cout << "Current stock for Product ID " << targetPID << ": " << current->stock << endl;
-
 		//Insert new stock quantity.
 		int newStock;
 		cout << "Enter new stock quantity: ";
@@ -233,45 +226,48 @@ void Department::editStock(string targetPID) { //This Function is use to edit th
 		}
 
 		current->stock = newStock;
-		cout << "Stock updated successfully.\n";
+		cout << "Stock updated successfully!\n\n";
+	}
+	else {
+		return;
+	}
 }
 
 //This function can let user to input the target item ID and delete the Item.
 void Department::deleteItem(string targetPID) {
 	Product* target = sentinelSearchByPID(targetPID);
 
-	if (!target) {
-		cout << "Product with ID " << targetPID << " not found.\n";
+	if (target) {
+		Product* current = pHead;
+		Product* previous = nullptr;
+
+		while (current != nullptr && current != target) {
+			previous = current;
+			current = current->next;
+		}
+
+		if (current == nullptr) return; // safety check
+
+		//Update pHead if target is first data.
+		if (previous == nullptr) {
+			pHead = current->next;
+		}
+		else {
+			previous->next = current->next;
+		}
+
+		//Update pTail if the target is last data.
+		if (pTail == current) {
+			pTail = previous;
+		}
+
+		delete current;
+		noOfProduct--;
+
+		cout << "Product with ID " << targetPID << " deleted successfully.\n";
+	}
+	else
 		return;
-	}
-
-	Product* current = pHead;
-	Product* previous = nullptr;
-
-	while (current != nullptr && current != target) {
-		previous = current;
-		current = current->next;
-	}
-
-	if (current == nullptr) return; // safety check
-
-	//Update pHead if target is first data.
-	if (previous == nullptr) {
-		pHead = current->next;
-	}
-	else {
-		previous->next = current->next;
-	}
-	
-	//Update pTail if the target is last data.
-	if (pTail == current) {
-		pTail = previous;
-	}
-
-	delete current;
-	noOfProduct--;
-
-	cout << "Product with ID " << targetPID << " deleted successfully.\n";
 }
 
 int Department::getNoOfProduct() {

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 #include "Department.h"
 #include "InventorySystem.h"
 using namespace std;
@@ -28,6 +29,7 @@ bool InventorySystem::isPIDUniqueAcrossDepartments(const string& PID) {
     return true;
 }
 
+
 void InventorySystem::menu() {
     int choice;
     bool running = true;
@@ -47,18 +49,27 @@ void InventorySystem::menu() {
         cin >> choice;
 
         switch (choice) {
-        case 1: {
+        case 1: {      
             for (int i = 0; i < DEPT_COUNT; i++) {
-                cout << "\n--- " << deptName[i] << " Department ---\n";
+                cout << "\n\n";
+                cout << setw(24) << right << "*** " << deptName[i] << " DEPARTMENT ***\n";
+                cout << string(70, '-') << endl;
                 dept[i]->displayItem();
             }
+            cout << "\nPress enter to continue...\n\n"; 
+            cin.ignore();
+            cin.get(); 
             break;
         }
-        case 2: {
+        case 2: {       
             int deptChoice;
             cout << "\nSelect Department:\n";
-            for (int i = 0; i < DEPT_COUNT; ++i)
-                cout << i+1 << ". " << deptName[i] << endl;
+            for (int i = 0; i < DEPT_COUNT; ++i) {
+                cout << "\t";
+                cout << i + 1 << ". " << deptName[i] << endl;
+
+            }
+            cout << "Enter your department choice: ";
             cin >> deptChoice;
             deptChoice -= 1;
             if (deptChoice < 0 || deptChoice >= DEPT_COUNT) {
@@ -84,13 +95,20 @@ void InventorySystem::menu() {
             cout << "Enter Stock: ";
             cin >> stock;
             dept[deptChoice]->addItem(new Product(id, name, colour, price, stock));
+
+            cout << "Press enter to continue...\n";
+            cin.ignore();
+            cin.get();
             break;
         }
-        case 3: {
-            for (int i = 0; i < DEPT_COUNT; i++) {
+        case 3: {       
+            for (int i = 0; i < DEPT_COUNT; i++) 
                 dept[i]->sortItemByPrice(true);
-            }
-            cout << "Products sorted by price in ascending order.\n";
+            cout << "Successfully sort products by price in ascending order!\n\n";
+
+            cout << "Press enter to continue...\n";
+            cin.ignore();
+            cin.get();
             break;
         }
         case 4: {
@@ -98,25 +116,59 @@ void InventorySystem::menu() {
             cout << "Enter Product ID or Name to search: ";
             cin >> targetID;
             for (int i = 0; i < DEPT_COUNT; i++) {
+                cout << "\t" << setw(11) << left << deptName[i] << ": ";
                 dept[i]->searchItemName(targetID);
             }
+            cout << "\nPress enter to continue...\n";
+            cin.ignore();
+            cin.get();
+            break;
         }
         case 5: {
             string id;
+            bool edited = false;
+
             cout << "Enter Product ID to edit stock: ";
             cin >> id;
             for (int i = 0; i < DEPT_COUNT; i++) {
-                dept[i]->editStock(id);
+                Product* found = dept[i]->sentinelSearchByPID(id);
+                if (found != nullptr) {
+                  dept[i]->editStock(id);
+                  edited = true;
+                  break; // stop after first delete
+                }
             }
+            if (!edited) {
+                cout << "Product with ID " << id << " not found.\n\n";
+            }
+
+            cout << "Press enter to continue...\n";
+            cin.ignore();
+            cin.get();
             break;
         }
         case 6: {
             string id;
+            bool deleted = false;
+
             cout << "Enter Product ID to delete: ";
             cin >> id;
-            for (int i = 0; i < DEPT_COUNT; i++) {
-                dept[i]->deleteItem(id);
+            for (int i = 0; i < DEPT_COUNT; ++i) {
+                Product* found = dept[i]->sentinelSearchByPID(id);
+                if (found != nullptr) {
+                    dept[i]->deleteItem(id);
+                    deleted = true;
+                    break; // stop after first delete
+                }
             }
+
+            if (!deleted) {
+                cout << "Product with ID " << id << " not found.\n\n";
+            }
+
+            cout << "Press enter to continue...\n";
+            cin.ignore();
+            cin.get();
             break;
         }
         case 7:

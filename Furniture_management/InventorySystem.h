@@ -11,7 +11,7 @@ enum DeptType {
 	DEPT_COUNT //end with counting number of types in total = 5
 };
 
-const string deptName[] = { "Bedroom", "Living room", "Kitchen", "Bathroom", "Others" };
+const string deptName[] = { "BEDROOM", "LIVING ROOM", "KITCHEN", "BATHROOM", "OTHERS" };
 
 class InventorySystem {
 public:
