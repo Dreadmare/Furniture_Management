@@ -1,2 +1,6 @@
-﻿  InventorySystem.cpp
+﻿  Department.cpp
+C:\Users\User\Desktop\Furniture_Management2\Furniture_management\Department.cpp(109,12): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  InventorySystem.cpp
+  Generating Code...
+C:\Users\User\Desktop\Furniture_Management2\Furniture_management\Department.cpp(189,1): warning C4715: 'Department::searchItemByName': not all control paths return a value
   Furniture_management.vcxproj -> C:\Users\User\Desktop\Furniture_Management2\x64\Debug\Furniture_management.exe
