@@ -96,7 +96,7 @@ void Department::sortItemByPrice(bool ascending) {
 	}
 }
 
-//Use Binary Search technique to search the Product ID.
+//Use Binary Search technique to search by Product ID.
 Product* Department::binarySearchByPID(const string& targetPID) {
 	vector<Product*> productList = toVector();	//Since we use linked list, we need to change the data format to vector to do the binary search.
 
@@ -120,7 +120,7 @@ Product* Department::binarySearchByPID(const string& targetPID) {
 	return nullptr; //If the target not found it will return.
 }
 
-//Use Sentinel Search technique to search the Product ID.
+//Use Sentinel Search technique to search by Product ID
 Product* Department::sentinelSearchByPID(const string& targetPID) {
 	if (!pHead) return nullptr;
 
@@ -152,6 +152,7 @@ Product* Department::sentinelSearchByPID(const string& targetPID) {
 	return current;
 }
 
+//Use Sentinel Search technique to search by Product name
 void Department::searchItemName(string keyword) {
 	if (!pHead) {
 		cout << "No products to search.\n";
