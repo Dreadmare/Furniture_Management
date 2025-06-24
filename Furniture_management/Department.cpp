@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
 #include "Product.h"
 #include "Department.h"
-#include <iomanip>
 using namespace std;
 
 Department::Department(string name) {
@@ -265,4 +267,47 @@ void Department::deleteItem(string targetPID) {
 
 int Department::getNoOfProduct() {
 	return noOfProduct;
+}
+
+void Department::saveToFile(ofstream& outFile) {
+	Product* current = pHead;
+	while (current != nullptr) {
+		//write into file
+		outFile << current->PID << ','
+			<< current->productName << ','
+			<< current->colour << ','
+			<< current->price << ','
+			<< current->stock << '\n';
+		current = current->next;
+	}
+}
+
+void Department::loadFromFile(ifstream& inFile) {
+	string line;
+	Product* last = nullptr;
+
+	while (getline(inFile, line)) {
+		stringstream ss(line);
+		string pid, name, colour, priceStr, stockStr;
+
+		getline(ss, pid, ',');
+		getline(ss, name, ',');
+		getline(ss, colour, ',');
+		getline(ss, priceStr, ',');
+		getline(ss, stockStr, ',');
+
+		float price = stof(priceStr);
+		int stock = stoi(stockStr);
+
+		Product* newProd = new Product(pid, name, colour, price, stock);
+
+		if (!pHead) {
+			pHead = pTail = newProd;
+		}
+		else {
+			pTail->next = newProd;
+			pTail = newProd;
+		}
+		noOfProduct++;
+	}
 }

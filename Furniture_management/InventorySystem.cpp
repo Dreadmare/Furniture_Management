@@ -11,18 +11,7 @@ InventorySystem::InventorySystem() {
 	for (int i = 0; i < DEPT_COUNT; i++) {
 		dept[i] = new Department(deptName[i]);
 	}
-    // Add initial products (hardcoded for demo/testing)
-    dept[BEDROOM]->addItem(new Product("P001", "Bed Frame", "Brown", 399.99, 10));
-    dept[BEDROOM]->addItem(new Product("P002", "Wardrobe", "White", 299.50, 7));
-
-    dept[LIVING_ROOM]->addItem(new Product("P101", "Sofa", "Grey", 599.00, 5));
-    dept[LIVING_ROOM]->addItem(new Product("P102", "TV Cabinet", "Black", 249.90, 4));
-
-    dept[KITCHEN]->addItem(new Product("P201", "Dining Table", "Oak", 699.00, 3));
-
-    dept[BATHROOM]->addItem(new Product("P301", "Mirror", "Silver", 89.90, 15));
-
-    dept[OTHERS]->addItem(new Product("P401", "Bookshelf", "Pine", 159.99, 8));
+    loadAllDepartments(); //load form file on startup
 }
 
 //deconstructor to avoid memory leaking
@@ -66,6 +55,7 @@ void InventorySystem::menu() {
         }
         choice = stoi(input); // convert to int
         if (choice < 1 || choice > 7) {
+            cin.clear();
             cout << "Invalid input. Please enter a number between 1 and 7.\n";
             continue;
         }
@@ -117,6 +107,7 @@ void InventorySystem::menu() {
                 else {
                     break;
                 }
+
             }
 
             // Validate stock input
@@ -133,6 +124,7 @@ void InventorySystem::menu() {
                 }
             }
             dept[deptChoice]->addItem(new Product(id, name, colour, price, stock));
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
         case 3: {
@@ -172,6 +164,7 @@ void InventorySystem::menu() {
             if (!found) {
                 cout << "Product with ID or Name '" << keyword << "' not found in any department.\n";
             }
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
         case 5: {
@@ -191,6 +184,7 @@ void InventorySystem::menu() {
             if (!found) {
                 cout << "Product with ID " << id << " not found in any department.\n";
             }
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
         case 6: {
@@ -209,14 +203,45 @@ void InventorySystem::menu() {
             if (!found) { //If not found then output this message.
                 cout << "Product with ID " << id << " not found in any department.\n";
             }
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
         case 7:
+            saveAllDepartments(); //save all to file before close system
             running = false;
             cout << "Exiting system.\n";
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
+
+void InventorySystem::saveAllDepartments() {
+    for (int i = 0; i < DEPT_COUNT; i++) {
+        string filename = deptName[i] + ".txt";
+        ofstream outFile(filename); //open a file to write
+        if (outFile.is_open()) {
+            dept[i]->saveToFile(outFile);
+            outFile.close();
+        }
+        else {
+            cout << "Failed to save to file: " << filename << endl;
+        }
+    }
+}
+
+void InventorySystem::loadAllDepartments() {
+    for (int i = 0; i < DEPT_COUNT; ++i) {
+        string filename = deptName[i] + ".txt";
+        ifstream inFile(filename);
+        if (inFile.is_open()) {
+            dept[i]->loadFromFile(inFile);
+            inFile.close();
+        }
+        else {
+            // File might not exist yet, ignore it
+            continue;
         }
     }
 }

@@ -1,0 +1,2 @@
+P202,dining chair,brown,20,20
+P201,dining table,oak,699,3

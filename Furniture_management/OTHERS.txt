@@ -1,0 +1,2 @@
+P402,LED Lamp,Yellow,10,50
+P401,Table Lamp,Blue,50,50

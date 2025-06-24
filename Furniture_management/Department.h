@@ -29,7 +29,9 @@ public:
 	Product* sentinelSearchByPID(const string& targetPID);
 	int getNoOfProduct();
 
-
+	//file operation
+	void saveToFile(ofstream& outFile);
+	void loadFromFile(ifstream& inFile);
 };
 
 #endif

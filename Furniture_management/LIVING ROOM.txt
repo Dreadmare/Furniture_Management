@@ -1,0 +1,2 @@
+P102,tv cabinet,black,349.9,8
+P101,sofa,grey,599,5
