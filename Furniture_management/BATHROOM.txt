@@ -1,2 +1,2 @@
-P301,mirror,silver,20,20
 P302,mirror,gold,20,20
+P301,mirror,silver,20,20

@@ -131,7 +131,7 @@ void InventorySystem::menu() {
             for (int i = 0; i < DEPT_COUNT; i++) {
                 dept[i]->sortItemByPrice(true);
             }
-            cout << "Products sorted by price in ascending order.\n";
+            cout << "Successfully sort products by price in ascending order!\n\n";
             break;
         }
         case 4: {
@@ -191,16 +191,16 @@ void InventorySystem::menu() {
             string id;
             cout << "Enter Product ID to delete: ";
             cin >> id;
-            bool found = false;
+            bool deleted = false;
             for (int i = 0; i < DEPT_COUNT; i++) {
                 Product* result = dept[i]->sentinelSearchByPID(id);
                 if (result) {
                     dept[i]->deleteItem(result);
-                    found = true;
+                    deleted = true;
                     break; // stop checking other departments
                 }
             }
-            if (!found) { //If not found then output this message.
+            if (!deleted) { //If not found then output this message.
                 cout << "Product with ID " << id << " not found in any department.\n";
             }
             cin.ignore(numeric_limits<streamsize>::max(), '\n');

@@ -22,6 +22,7 @@ public:
 	~InventorySystem();
 	void menu();
 	bool isPIDUniqueAcrossDepartments(const string& PID);
+
 	//file operation
 	void saveAllDepartments();
 	void loadAllDepartments();
