@@ -84,11 +84,43 @@ void Department::sortItem(bool ascending) {
 
 //Sorting price in asc order from lowest to highest price
 void Department::searchPriceAsc() {
-	if(!pHead){
-		cout<<"No product to display.\n";
-		return;
-	}
-	
+	if (!pHead) {
+        cout << "No products available.\n";
+        return;
+    }
+    
+    // Create temporary array for sorting
+    int n = noOfProduct;
+    Product** arr = new Product*[n];
+    
+    // Copy products to array
+    Product* current = pHead;
+    for (int i = 0; i < n; i++) {
+        arr[i] = current;
+        current = current->next;
+    }
+
+    // Insertion sort (ascending order)
+    for (int i = 1; i < n; i++) {
+        Product* key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j]->price > key->price) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+
+    // Display sorted products
+    for (int i = 0; i < n; i++) {
+        cout << "Product ID: " << arr[i]->PID << endl;
+        cout << "Product name: " << arr[i]->productName << endl;
+        cout << "Product colour: " << arr[i]->colour << endl;
+        cout << "Product price: RM" << arr[i]->price << endl;
+        cout << "Available stock: " << arr[i]->stock << "\n\n";
+    }
+
+    delete[] arr;
 }
 
 void Department::editStock() {
