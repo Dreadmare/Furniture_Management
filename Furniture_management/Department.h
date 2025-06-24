@@ -21,7 +21,7 @@ public:
 	void addItem(Product* newProduct);
 	void displayItem();
 	void sortItemByPrice(bool ascending = true);
-	bool searchItemByName(string);
+	void searchItemByName(string);
 	void editStock(Product* TargetID);
 	void deleteItem(Product* TargetID);
 	vector<Product*> toVector();

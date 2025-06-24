@@ -1,2 +1,3 @@
-P002,wardrobe,white,299.5,5
-P001,bed frame,brown,399.99,10
+BD001,single bedframe,dark grey,299,5
+BD002,matteress,white,79,8
+BD003,wardrobe,brown,699,3

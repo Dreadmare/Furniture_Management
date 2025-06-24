@@ -1,2 +1,6 @@
-P102,tv cabinet,black,349.9,8
-P101,sofa,grey,599,5
+LV001,sofa,grey,1299,5
+LV002,coffee table,bamboo,189,5
+LV003,display cabinet,white,156.66,3
+LV004,wall shelf,black,69,10
+LV005,armchair,beige,199,4
+LV006,sofa,navy blue,1199,2

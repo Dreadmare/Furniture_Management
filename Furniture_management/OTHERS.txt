@@ -1,1 +1,4 @@
-P401,Table Lamp,Blue,50,20
+OT001,office chair,black,89,10
+OT002,led spotlight,white,55,30
+OT003,frame,aluminium,30,17
+OT004,rug,off-white,55,22

@@ -1,2 +1,2 @@
-P302,mirror,gold,20,20
-P301,mirror,silver,20,20
+BH001,shower head,silver,40,20
+BH002,mirror,walnut,25.99,23

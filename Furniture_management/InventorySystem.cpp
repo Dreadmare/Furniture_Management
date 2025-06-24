@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 #include "Department.h"
 #include "InventorySystem.h"
 using namespace std;
@@ -64,16 +65,23 @@ void InventorySystem::menu() {
 
         case 1: {
             for (int i = 0; i < DEPT_COUNT; i++) {
-                cout << "\n--- " << deptName[i] << " Department ---\n";
+                cout << endl;
+                cout << setw(31) << right << "*** " << deptName[i] << " DEPARTMENT ***\n";
+                cout << string(86, '-') << endl;
                 dept[i]->displayItem();
             }
+            cout << "\nPress enter to continue...\n";
+            cin.get();
             break;
         }
         case 2: {
             int deptChoice;
             cout << "\nSelect Department:\n";
-            for (int i = 0; i < DEPT_COUNT; ++i)
-                cout << i+1 << ". " << deptName[i] << endl;
+            for (int i = 0; i < DEPT_COUNT; ++i) {
+                cout << "\t";
+                cout << i + 1 << ". " << deptName[i] << endl;
+            }
+            cout << "Enter your department choice: ";
             cin >> deptChoice;
             cin.ignore();
             deptChoice --;
@@ -125,6 +133,9 @@ void InventorySystem::menu() {
             }
             dept[deptChoice]->addItem(new Product(id, name, colour, price, stock));
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            cout << "\nPress enter to continue...\n";
+            cin.get();
             break;
         }
         case 3: {
@@ -132,38 +143,19 @@ void InventorySystem::menu() {
                 dept[i]->sortItemByPrice(true);
             }
             cout << "Successfully sort products by price in ascending order!\n\n";
+            cout << "Press enter to continue...\n";
+            cin.get();
             break;
         }
         case 4: {
-            string keyword;
-            cin.ignore(); // to clear newline left in input buffer
+            string targetID;
             cout << "Enter Product ID or Name to search: ";
-            getline(cin, keyword);
-
-            bool found = false;
+            getline(cin, targetID);
             for (int i = 0; i < DEPT_COUNT; i++) {
-                Product* byID = dept[i]->sentinelSearchByPID(keyword);
-                if (byID) {
-                    cout << "\nFound in " << deptName[i] << " Department:\n";
-                    cout << "Product ID: " << byID->PID << "\nName: " << byID->productName
-                        << "\nColour: " << byID->colour << "\nPrice: RM" << byID->price
-                        << "\nStock: " << byID->stock << endl;
-                    found = true;
-                    break; // stop after first found match (or remove to find duplicates)
-                }
+                cout << "\t" << setw(11) << left << deptName[i] << ": ";
+                dept[i]->searchItemByName(targetID);
             }
-
-            // If not found by ID, try by Name
-            if (!found) {
-                for (int i = 0; i < DEPT_COUNT; i++) {
-                    bool nameFound = dept[i]->searchItemByName(keyword);
-                    if (nameFound) found = true;
-                }
-            }
-
-            if (!found) {
-                cout << "Product with ID or Name '" << keyword << "' not found in any department.\n";
-            }
+            cout << "\nPress enter to continue...\n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
@@ -184,6 +176,8 @@ void InventorySystem::menu() {
             if (!found) {
                 cout << "Product with ID " << id << " not found in any department.\n";
             }
+            cout << "\nPress enter to continue...\n";
+            cin.get();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
@@ -197,12 +191,15 @@ void InventorySystem::menu() {
                 if (result) {
                     dept[i]->deleteItem(result);
                     deleted = true;
+                    cout << "Product with ID " << id << " deleted successfully.\n";
                     break; // stop checking other departments
                 }
             }
             if (!deleted) { //If not found then output this message.
                 cout << "Product with ID " << id << " not found in any department.\n";
             }
+            cout << "\nPress enter to continue...\n";
+            cin.get();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }

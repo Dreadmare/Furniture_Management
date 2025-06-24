@@ -1,2 +1,3 @@
-P202,dining chair,brown,20,20
-P201,dining table,oak,699,3
+KC001,wall storage,metal,119,12
+KC002,wok,black,79,25
+KC003,colander,metallic,25,40

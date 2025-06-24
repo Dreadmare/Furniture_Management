@@ -14,8 +14,7 @@ Department::Department(string name) {
 	noOfProduct = 0;
 }
 
-//for testing, this function will receive product's info from Main.cpp
-//after complete all core functions, then only get user input
+
 void Department::addItem(Product* newProduct) {
 	if (!pHead) {
 		pHead = newProduct;
@@ -40,17 +39,17 @@ void Department::displayItem() {
 	}
 
 	cout << left << setw(15) << "Product ID"
-		<< setw(20) << "Name"
-		<< setw(15) << "Colour"
-		<< setw(10) << "Price"
+		<< setw(28) << "Name"
+		<< setw(18) << "Colour"
+		<< setw(12) << "Price"
 		<< setw(10) << "Stock" << endl;
-	cout << string(70, '-') << endl;
+	cout << string(86, '-') << endl;
 
 	while (pTraverse != nullptr) {
 		cout << left << setw(15) << pTraverse->PID
-			<< setw(20) << pTraverse->productName
-			<< setw(15) << pTraverse->colour
-			<< "RM" << setw(8) << fixed << setprecision(2) << pTraverse->price
+			<< setw(28) << pTraverse->productName
+			<< setw(18) << pTraverse->colour
+			<< "RM" << setw(12) << fixed << setprecision(2) << pTraverse->price
 			<< setw(10) << pTraverse->stock << endl;
 		pTraverse = pTraverse->next;
 	}
@@ -153,9 +152,11 @@ Product* Department::sentinelSearchByPID(const string& targetPID) {
 	return current;
 }
 
-//Use Sentinel Search technique to search by Product name
-bool Department::searchItemByName(string keyword) {
-	if (!pHead) return false;
+void Department::searchItemByName(string keyword) {
+	if (!pHead) {
+		cout << "No products to search.\n";
+		return;
+	}
 
 	// Create sentinel
 	Product* sentinel = new Product(keyword, keyword, "", 0.0, 0);
@@ -171,12 +172,11 @@ bool Department::searchItemByName(string keyword) {
 	while (true) {
 		if (current->PID == keyword || current->productName == keyword) {
 			if (current == sentinel) break;
-			cout << "\nFound Product:\n";
-			cout << "ID: " << current->PID << "\nName: " << current->productName
-				<< "\nColour: " << current->colour << "\nPrice: RM" << current->price
-				<< "\nStock: " << current->stock << "\n";
+			cout << endl;
+			cout << right << setw(25) << "ID: " << current->PID << " | Name: " << current->productName
+				<< " | Colour: " << current->colour << " | Price: RM" << current->price
+				<< " | Stock: " << current->stock << "\n";
 			found = true;
-			return found;
 		}
 		current = current->next;
 	}
@@ -253,7 +253,6 @@ void Department::deleteItem(Product* targetPID) {
 	delete current;
 	noOfProduct--;
 
-	cout << "Product with ID " << targetPID << " deleted successfully.\n";
 }
 
 int Department::getNoOfProduct() {
