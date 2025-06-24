@@ -200,46 +200,37 @@ vector<Product*> Department::toVector() {
 	return list;
 }
 
-void Department::editStock(string targetPID) { //This Function is use to edit the product stock number.
+void Department::editStock(Product* product) { //This Function is use to edit the product stock number.
 
-	Product* current = binarySearchByPID(targetPID);
-
-		//If the product ID is not found, it will show this message.
-		if (current == nullptr) {
-			cout << "Product with ID " << targetPID << " not found.\n";
-			return;
-		}
-
-		cout << "Current stock for Product ID " << targetPID << ": " << current->stock << endl;
+		cout << "Current stock for Product ID " << product->PID << ": " << product->stock << endl;
 
 		//Insert new stock quantity.
 		int newStock;
+		while (true) {
 		cout << "Enter new stock quantity: ";
 		cin >> newStock;
 
 		// To validate the stock is not negative number.
-		if (newStock < 0) {
-			cout << "Stock cannot be negative. Operation cancelled.\n";
-			return;
+		if (cin.fail() || newStock < 0) {
+			cout << "Invalid stock. Cannot enter negative number.\n";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+		else break;
 		}
 
-		current->stock = newStock;
+		product->stock = newStock;
 		cout << "Stock updated successfully.\n";
 }
 
 //This function can let user to input the target item ID and delete the Item.
-void Department::deleteItem(string targetPID) {
-	Product* target = sentinelSearchByPID(targetPID);
-
-	if (!target) {
-		cout << "Product with ID " << targetPID << " not found.\n";
-		return;
-	}
+void Department::deleteItem(Product* targetPID) {
+	if (!targetPID) return;
 
 	Product* current = pHead;
 	Product* previous = nullptr;
 
-	while (current != nullptr && current != target) {
+	while (current != nullptr && current != targetPID) {
 		previous = current;
 		current = current->next;
 	}

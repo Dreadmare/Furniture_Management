@@ -175,7 +175,7 @@ void InventorySystem::menu() {
             for (int i = 0; i < DEPT_COUNT; i++) {
                 Product* result = dept[i]->binarySearchByPID(id);
                 if (result) {
-                    dept[i]->editStock(id);
+                    dept[i]->editStock(result);
                     found = true;
                     break; // stop checking other departments
                 }
@@ -193,9 +193,9 @@ void InventorySystem::menu() {
             cin >> id;
             bool found = false;
             for (int i = 0; i < DEPT_COUNT; i++) {
-                Product* result = dept[i]->binarySearchByPID(id);
+                Product* result = dept[i]->sentinelSearchByPID(id);
                 if (result) {
-                    dept[i]->deleteItem(id);
+                    dept[i]->deleteItem(result);
                     found = true;
                     break; // stop checking other departments
                 }

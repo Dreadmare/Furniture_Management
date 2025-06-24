@@ -22,8 +22,8 @@ public:
 	void displayItem();
 	void sortItemByPrice(bool ascending = true);
 	bool searchItemByName(string);
-	void editStock(string);
-	void deleteItem(string);
+	void editStock(Product* TargetID);
+	void deleteItem(Product* TargetID);
 	vector<Product*> toVector();
 	Product* binarySearchByPID(const string& targetPID);
 	Product* sentinelSearchByPID(const string& targetPID);
