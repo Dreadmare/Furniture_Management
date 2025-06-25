@@ -1,3 +1,5 @@
+//InventorySystem.cpp by Group BITI-07
+//Group memeber: Chee Fang Yee, Soon Boon Ming, Muhd Aiman Hakimi Bin Mohd Hafizi, Wong Man Yee, Lim Jia Hui
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -7,7 +9,7 @@
 using namespace std;
 
 InventorySystem::InventorySystem() {
-	//assign name for department array
+	//assign name for department array by Chee Fang Yee
 	//eg. dept[0] is Bedroom, dept[1] is living room
 	for (int i = 0; i < DEPT_COUNT; i++) {
 		dept[i] = new Department(deptName[i]);
@@ -15,13 +17,14 @@ InventorySystem::InventorySystem() {
     loadAllDepartments(); //load form file on startup
 }
 
-//deconstructor to avoid memory leaking
+//deconstructor to avoid memory leaking by Chee Fang Yee
 InventorySystem::~InventorySystem() {
 	for (int i = 0; i < DEPT_COUNT; i++) {
 		delete dept[i];
 	}
 }
 
+//Check PID is Unique by Wong Man Yee
 bool InventorySystem::isPIDUniqueAcrossDepartments(const string& PID) {
     for (int i = 0; i < DEPT_COUNT; ++i) {
         if (dept[i]->sentinelSearchByPID(PID) != nullptr)
@@ -30,6 +33,7 @@ bool InventorySystem::isPIDUniqueAcrossDepartments(const string& PID) {
     return true;
 }
 
+//Menu interface by Wong Man Yee
 void InventorySystem::menu() {
     string input;
     int choice;
@@ -63,7 +67,7 @@ void InventorySystem::menu() {
 
         switch (choice) {
 
-        case 1: {
+        case 1: { //Display Product function
             for (int i = 0; i < DEPT_COUNT; i++) {
                 cout << endl;
                 cout << setw(31) << right << "*** " << deptName[i] << " DEPARTMENT ***\n";
@@ -74,7 +78,7 @@ void InventorySystem::menu() {
             cin.get();
             break;
         }
-        case 2: {
+        case 2: { //Add new product function
             int deptChoice;
             cout << "\nSelect Department:\n";
             for (int i = 0; i < DEPT_COUNT; ++i) {
@@ -85,7 +89,7 @@ void InventorySystem::menu() {
             cin >> deptChoice;
             cin.ignore();
             deptChoice --;
-            if (deptChoice < 0 || deptChoice >= DEPT_COUNT) {
+            if (deptChoice < 0 || deptChoice >= DEPT_COUNT) { //Validate department choice input.
                 cout << "Invalid department selection.\n";
                 break;
             }
@@ -138,7 +142,7 @@ void InventorySystem::menu() {
             cin.get();
             break;
         }
-        case 3: {
+        case 3: { //Sort product by price in ascending order.
             for (int i = 0; i < DEPT_COUNT; i++) {
                 dept[i]->sortItemByPrice(true);
             }
@@ -147,7 +151,7 @@ void InventorySystem::menu() {
             cin.get();
             break;
         }
-        case 4: {
+        case 4: { //Searh Porduct by PID or Name.
             string targetID;
             cout << "Enter Product ID or Name to search: ";
             getline(cin, targetID);
@@ -159,7 +163,7 @@ void InventorySystem::menu() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
-        case 5: {
+        case 5: { //Edit product stock
             string id;
             cout << "Enter Product ID to edit stock: ";
             cin >> id;
@@ -181,7 +185,7 @@ void InventorySystem::menu() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
-        case 6: {
+        case 6: { //Delete Product
             string id;
             cout << "Enter Product ID to delete: ";
             cin >> id;
@@ -214,7 +218,8 @@ void InventorySystem::menu() {
     }
 }
 
-void InventorySystem::saveAllDepartments() {
+//Function to save all data to file by Lim Jia Hui
+void InventorySystem::saveAllDepartments() { 
     for (int i = 0; i < DEPT_COUNT; i++) {
         string filename = deptName[i] + ".txt";
         ofstream outFile(filename); //open a file to write
@@ -228,6 +233,7 @@ void InventorySystem::saveAllDepartments() {
     }
 }
 
+//Fucntion Load data from file by Lim Jia Hui
 void InventorySystem::loadAllDepartments() {
     for (int i = 0; i < DEPT_COUNT; ++i) {
         string filename = deptName[i] + ".txt";

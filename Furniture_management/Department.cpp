@@ -1,3 +1,5 @@
+//Department.cpp by Group BITI-07
+//Group memeber: Chee Fang Yee, Soon Boon Ming, Muhd Aiman Hakimi Bin Mohd Hafizi, Wong Man Yee, Lim Jia Hui
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -14,7 +16,7 @@ Department::Department(string name) {
 	noOfProduct = 0;
 }
 
-
+//Add new Product Function. By Chee Fang Yee
 void Department::addItem(Product* newProduct) {
 	if (!pHead) {
 		pHead = newProduct;
@@ -30,7 +32,7 @@ void Department::addItem(Product* newProduct) {
 	cout << "Product added successfully.\n";
 }
 
-
+//Display all department product list. By Chee Fang Yee
 void Department::displayItem() {
 	pTraverse = pHead;
 	if (!pTraverse) {
@@ -55,7 +57,7 @@ void Department::displayItem() {
 	}
 }
 
-//Use insertion sort technique to sort the product by Price.
+//Use insertion sort technique to sort the product by Price. By Muhd Aiman Hakimi
 void Department::sortItemByPrice(bool ascending) {
 	if (pHead == nullptr || pHead->next == nullptr)
 	{
@@ -96,9 +98,10 @@ void Department::sortItemByPrice(bool ascending) {
 	}
 }
 
-//Use Binary Search technique to search by Product ID.
+//Use Binary Search technique to search by Product ID. By Soon Boon Ming
 Product* Department::binarySearchByPID(const string& targetPID) {
-	vector<Product*> productList = toVector();	//Since we use linked list, we need to change the data format to vector to do the binary search.
+	//Since we use linked list, we need to change the data format to vector to do the binary search.
+	vector<Product*> productList = toVector();	
 
 	// Sort vector by PID first
 	sort(productList.begin(), productList.end(), [](Product* a, Product* b) {
@@ -120,7 +123,7 @@ Product* Department::binarySearchByPID(const string& targetPID) {
 	return nullptr; //If the target not found it will return.
 }
 
-//Use Sentinel Search technique to search by Product ID.
+//Use Sentinel Search technique to search by Product ID. By Soon Boon Ming
 Product* Department::sentinelSearchByPID(const string& targetPID) {
 	if (!pHead) return nullptr;
 
@@ -152,13 +155,15 @@ Product* Department::sentinelSearchByPID(const string& targetPID) {
 	return current;
 }
 
+//Searh product by Name. By Soon Boon Ming
 void Department::searchItemByName(string keyword) {
 	if (!pHead) {
 		cout << "No products to search.\n";
 		return;
 	}
 
-	// Create sentinel
+	//Use sentinel search technique searh product name.
+	//Create sentinel
 	Product* sentinel = new Product(keyword, keyword, "", 0.0, 0);
 	Product* temp = pHead;
 	while (temp->next != nullptr) {
@@ -166,7 +171,7 @@ void Department::searchItemByName(string keyword) {
 	}
 	temp->next = sentinel;
 
-	// Search
+	//Start Search
 	Product* current = pHead;
 	bool found = false;
 	while (true) {
@@ -190,6 +195,7 @@ void Department::searchItemByName(string keyword) {
 	}
 }
 
+//Change linked list to Vector. By Soon Boon Ming
 vector<Product*> Department::toVector() {
 	vector<Product*> list;
 	Product* current = pHead;
@@ -200,7 +206,8 @@ vector<Product*> Department::toVector() {
 	return list;
 }
 
-void Department::editStock(Product* product) { //This Function is use to edit the product stock number.
+//This Function is use to edit the product stock number. By Lim Jia Hui
+void Department::editStock(Product* product) { 
 
 		cout << "Current stock for Product ID " << product->PID << ": " << product->stock << endl;
 
@@ -223,7 +230,7 @@ void Department::editStock(Product* product) { //This Function is use to edit th
 		cout << "Stock updated successfully.\n";
 }
 
-//This function can let user to input the target item ID and delete the Item.
+//This function can let user to input the target item ID and delete the Item. By Lim Jia Hui
 void Department::deleteItem(Product* targetPID) {
 	if (!targetPID) return;
 
@@ -252,14 +259,13 @@ void Department::deleteItem(Product* targetPID) {
 
 	delete current;
 	noOfProduct--;
-
 }
 
-int Department::getNoOfProduct() {
+int Department::getNoOfProduct() { //Get total number of product. By Chee Fang Yee
 	return noOfProduct;
 }
 
-void Department::saveToFile(ofstream& outFile) {
+void Department::saveToFile(ofstream& outFile) { //Save data to file. By Lim Jia Hui
 	Product* current = pHead;
 	while (current != nullptr) {
 		//write into file
@@ -272,7 +278,7 @@ void Department::saveToFile(ofstream& outFile) {
 	}
 }
 
-void Department::loadFromFile(ifstream& inFile) {
+void Department::loadFromFile(ifstream& inFile) { //Save data to file. By Lim Jia Hui
 	string line;
 	Product* last = nullptr;
 
@@ -286,8 +292,8 @@ void Department::loadFromFile(ifstream& inFile) {
 		getline(ss, priceStr, ',');
 		getline(ss, stockStr, ',');
 
-		float price = stof(priceStr);
-		int stock = stoi(stockStr);
+		float price = stof(priceStr); //change string to float type.
+		int stock = stoi(stockStr); //change string to int type.
 
 		Product* newProd = new Product(pid, name, colour, price, stock);
 

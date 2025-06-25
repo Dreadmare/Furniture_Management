@@ -1,3 +1,5 @@
+//InventorySystem.h by Group BITI-07
+//Group memeber: Chee Fang Yee, Soon Boon Ming, Muhd Aiman Hakimi Bin Mohd Hafizi, Wong Man Yee, Lim Jia Hui
 #ifndef INVENTORYSYSTEM_H
 #define INVENTORYSYSTEM_H
 #include <iostream>
@@ -17,15 +19,14 @@ class InventorySystem {
 public:
 	Department* dept[5];
 
-
-	InventorySystem();
-	~InventorySystem();
-	void menu();
-	bool isPIDUniqueAcrossDepartments(const string& PID);
+	InventorySystem(); //constructor
+	~InventorySystem(); //destructor
+	void menu(); //Menu interface by Wong Man Yee
+	bool isPIDUniqueAcrossDepartments(const string& PID); //Check PID is unique by Wong Man Yee
 
 	//file operation
-	void saveAllDepartments();
-	void loadAllDepartments();
+	void saveAllDepartments(); //save all data to file by Lim Jia Hui
+	void loadAllDepartments(); //Load data from file by Lim Jia Hui
 };
 
 #endif
